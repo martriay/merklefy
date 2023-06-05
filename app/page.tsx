@@ -59,12 +59,23 @@ export default function Home() {
     target.value = '' // allows re-submitting same file
   }
 
+  const downloadTree = () => {
+    const exportName = "merklefy-tree"
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tree.dump()))
+    const downloadAnchorNode = document.createElement('a')
+    downloadAnchorNode.setAttribute("href", dataStr)
+    downloadAnchorNode.setAttribute("download", exportName + ".json")
+    document.body.appendChild(downloadAnchorNode)
+    downloadAnchorNode.click()
+    downloadAnchorNode.remove()
+  }
+
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <div className='container px-8 mx-auto'>
+      <div className='container px-8 max-w-3xl mx-auto'>
 
         <form
-          className='max-w-3xl mx-auto'
+          className=''
           onSubmit={(e) => {
             e.preventDefault()
             updateRoot()
@@ -125,23 +136,33 @@ export default function Home() {
               <span>Generate 🍃</span>
             </button>
           </div>
+        </form>
 
-          { tree.root !== defaultTree.root
-            ? <div className='relative w-full h-16 px-3 py-2 mt-5 duration-150 border rounded hover:border-zinc-100/80 border-zinc-600 focus-within:border-zinc-100/80 focus-within:ring-0 '>
-              <label htmlFor='reads' className='block text-xs font-medium text-zinc-100'>
+        { tree.root !== defaultTree.root
+          ? <>
+            <div className='relative w-full h-16 px-3 py-2 mt-5 duration-150 border rounded text-lime-500 border-lime-100 focus-within:border-zinc-100/80 focus-within:ring-0 overflow-auto'>
+              <label htmlFor='reads' className='block text-xs font-medium text-lime-100'>
               Root
               </label>
               <p>{tree.root}</p>
             </div>
-            : <></>
-          }
+            <button
+              type='submit'
+              onClick={ downloadTree }
+              disabled={text.length <= 0}
+              className={`w-full h-12 px-3 py-2 mt-2 duration-150 rounded text-base font-semibold leading-7 bg-lime-200 ring-1 ring-transparent duration-150 text-zinc-900 hover:text-zinc-100 hover:ring-zinc-600/80  hover:bg-lime-800/20`}
+              >
+              <span>Download tree 🌳🪓</span>
+            </button>
+          </>
+          : <></>
+        }
 
-          {error ? <ErrorMessage message={error} /> : null}
+        {error ? <ErrorMessage message={error} /> : null}
 
-          <div className='mt-8'>
-            <p className='space-y-2 text-xs text-zinc-500'>beware of marto.lol</p>
-          </div>
-        </form>
+        <div className='mt-8'>
+          <p className='space-y-2 text-xs text-zinc-500'>beware of marto.lol</p>
+        </div>
 
       </div>
     </main>
