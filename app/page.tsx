@@ -5,7 +5,6 @@ import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { parse } from 'csv-parse/sync'
 
 import ErrorMessage from './error'
-import Title from './title'
 
 const encoding = ['address', 'uint256']
 const placeholder = '"0x2222222222222222222222222222222222222222", "2500000000000000000"'
@@ -79,6 +78,10 @@ export default function Home() {
     <main className='flex min-h-screen flex-col items-center justify-between p-0 md:p-24'>
       <div className='container px-8 max-w-3xl mx-auto'>
 
+        <h1 className="py-4 text-5xl font-bold text-center gradient">
+          Merklefy 🍃
+        </h1>
+
         <form
           className=''
           onSubmit={e => {
@@ -86,7 +89,6 @@ export default function Home() {
             updateTree()
           }}
           >
-          <Title>Merklefy 🍃</Title>
 
           <pre className='px-4 py-3 mt-8 font-mono text-left bg-transparent border rounded border-zinc-600 focus:border-zinc-100/80 focus:ring-0 sm:text-sm text-zinc-100'>
             <div className='flex items-start px-1 text-sm'>

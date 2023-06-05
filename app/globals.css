@@ -25,3 +25,26 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.gradient {
+  color: transparent;
+  background: linear-gradient(-60deg, #69e44e, #49fa64, #ffd035, #9949fa, #57ff51);
+  background-size: 200% 200%;
+  animation: Gradient 8s ease infinite;
+  -moz-animation: Gradient 8s ease infinite;
+  -webkit-animation: Gradient 8s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
