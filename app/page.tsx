@@ -19,7 +19,7 @@ export default function Home() {
   const [error, setError] = useState('')
   const [text, setText] = useState('')
   
-  const updateRoot = () => {
+  const updateTree = () => {
     try {
       let values = parse(text, {
         skip_empty_lines: true,
@@ -40,6 +40,10 @@ export default function Home() {
     }
   }
 
+  const resetTree = () => {
+    setTree(defaultTree)
+  }
+
   const parseFile = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target
     const file = target.files![0]
@@ -53,6 +57,7 @@ export default function Home() {
     reader.onload = (e) => {
       const t = e.target!.result as string
       setText(t)
+      resetTree()
     }
 
     reader.readAsText(file)
@@ -76,9 +81,9 @@ export default function Home() {
 
         <form
           className=''
-          onSubmit={(e) => {
+          onSubmit={e => {
             e.preventDefault()
-            updateRoot()
+            updateTree()
           }}
           >
           <Title>Merklefy 🍃</Title>
@@ -101,7 +106,10 @@ export default function Home() {
                 name='text'
                 value={text}
                 minLength={1}
-                onChange={(e) => setText(e.target.value)}
+                onChange={ e => {
+                  setText(e.target.value)
+                  resetTree()
+                } }
                 rows={Math.max(5, text.split('\n').length)}
                 placeholder={placeholder}
                 className='w-full p-0 text-base bg-transparent border-0 appearance-none resize-none hover:resize text-zinc-100 placeholder-zinc-500 focus:ring-0 sm:text-sm'
