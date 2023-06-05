@@ -7,6 +7,13 @@ Web app to generate merkle trees and proofs 🍃
 
 Deployed at https://merklefy.marto.lol/
 
+## To do
+
+- [ ] Support custom schemas (today only `(address, uint256)` is supported)
+- [ ] Generate proofs
+- [ ] Validate proofs
+- [ ] There's a [single merkle tree](https://github.com/martriay/merklefy/blob/main/app/page.tsx#L10-L12) that's not supported by the app due to _reasons_. Fix it.
+
 ## Getting Started
 
 First, run the development server:
