@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect, Fragment, ChangeEvent } from 'react'
+import { useState, Fragment, ChangeEvent } from 'react'
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { parse } from 'csv-parse/sync'
 import ErrorMessage from './error'
-import * as ga from '../lib/ga';
 
 const encoding = ['address', 'uint256']
 const placeholder = '"0x2222222222222222222222222222222222222222", "2500000000000000000"'
@@ -14,8 +13,6 @@ const defaultValues = [
 const defaultTree = StandardMerkleTree.of(defaultValues, encoding)
 
 export default function Home() {
-  useEffect(ga.pageview);
-
   const [tree, setTree] = useState(defaultTree)
   const [error, setError] = useState('')
   const [text, setText] = useState('')
