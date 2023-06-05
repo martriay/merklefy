@@ -1,43 +1,149 @@
 'use client'
 
-import { useState } from "react"
-import { StandardMerkleTree } from "@openzeppelin/merkle-tree"
+import { useState, Fragment, ChangeEvent } from 'react'
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
 import { parse } from 'csv-parse/sync'
 
-const encoding = ["address", "uint256"]
+import ErrorMessage from './error'
+import Title from './title'
+
+const encoding = ['address', 'uint256']
+const placeholder = '"0x2222222222222222222222222222222222222222", "2500000000000000000"'
 const defaultValues = [
-  ["0x2222222222222222222222222222222222222222", "2500000000000000000"]
+  ['0x0000000000000000000000000000000000000000', '0987654345678999878']
 ]
+const defaultTree = StandardMerkleTree.of(defaultValues, encoding)
 
 export default function Home() {
-  const [tree, setTree] = useState(StandardMerkleTree.of(defaultValues, ["address", "uint256"]))
+  const [tree, setTree] = useState(defaultTree)
   const [error, setError] = useState('')
+  const [text, setText] = useState('')
   
-  const handleChange = (text: string) => {
+  const updateRoot = () => {
     try {
-      let values = parse(text, { skip_empty_lines: true })
+      let values = parse(text, {
+        skip_empty_lines: true,
+        trim: true
+      })
       setTree(StandardMerkleTree.of(values, encoding))
-      setError("")
+      setError('')
     } catch (e) {
       let message: string
-      if (typeof e === "string") {
+      if (typeof e === 'string') {
         message = e
       } else if (e instanceof Error) {
         message = e.message
       } else {
-        message = "nidea"
+        message = 'nidea'
       }
       setError(message)
     }
-  };
+  }
+
+  const parseFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target
+    const file = target.files![0]
+
+    if (file.size > 1024 * 1024 * 500) {
+      setError('File size must be less than 500mb')
+      return
+    }
+    
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const t = e.target!.result as string
+      setText(t)
+    }
+
+    reader.readAsText(file)
+    target.value = '' // allows re-submitting same file
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <p>{tree.root}</p>
-        <p className="text-red">{error}</p>
-        <textarea className="text-black" onChange={ e => handleChange(e.target.value) }>
-        </textarea>
-        <p>{JSON.stringify(tree)}</p>
+    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+      <div className='container px-8 mx-auto'>
+
+        <form
+          className='max-w-3xl mx-auto'
+          onSubmit={(e) => {
+            e.preventDefault()
+            updateRoot()
+          }}
+          >
+          <Title>Merklefy 🍃</Title>
+
+          <pre className='px-4 py-3 mt-8 font-mono text-left bg-transparent border rounded border-zinc-600 focus:border-zinc-100/80 focus:ring-0 sm:text-sm text-zinc-100'>
+            <div className='flex items-start px-1 text-sm'>
+              <div aria-hidden='true' className='pr-4 font-mono border-r select-none border-zinc-300/5 text-zinc-700'>
+                {Array.from({
+                  length: text.split('\n').length,
+                }).map((_, index) => (
+                  <Fragment key={index}>
+                    {(index + 1).toString().padStart(2, '0')}
+                    <br />
+                  </Fragment>
+                ))}
+              </div>
+
+              <textarea
+                id='text'
+                name='text'
+                value={text}
+                minLength={1}
+                onChange={(e) => setText(e.target.value)}
+                rows={Math.max(5, text.split('\n').length)}
+                placeholder={placeholder}
+                className='w-full p-0 text-base bg-transparent border-0 appearance-none resize-none hover:resize text-zinc-100 placeholder-zinc-500 focus:ring-0 sm:text-sm'
+                />
+            </div>
+          </pre>
+
+          <div className='flex flex-col items-center justify-center w-full gap-4 mt-4 sm:flex-row'>
+            <div className='w-full sm:w-1/5'>
+              <label
+                className='flex items-center justify-center h-16 px-3 py-2 text-sm whitespace-no-wrap duration-150 border rounded hover:border-zinc-100/80 border-zinc-600 focus:border-zinc-100/80 focus:ring-0 text-zinc-100 hover:text-white hover:cursor-pointer '
+                htmlFor='file_input'
+                >
+                Or upload a file
+              </label>
+              <input
+                className='hidden'
+                id='file_input'
+                type='file'
+                onChange={ parseFile }
+              />
+            </div>
+            <button
+              type='submit'
+              disabled={text.length <= 0}
+              className={`w-full h-16 px-3 py-2 duration-150 rounded sm:w-4/5 text-base font-semibold leading-7 bg-zinc-200 ring-1 ring-transparent duration-150 ${
+                text.length <= 0
+                ? 'text-zinc-400 cursor-not-allowed'
+                : 'text-zinc-900 hover:text-zinc-100 hover:ring-zinc-600/80  hover:bg-zinc-900/20'
+              }`}
+              >
+              <span>Generate 🍃</span>
+            </button>
+          </div>
+
+          { tree.root !== defaultTree.root
+            ? <div className='relative w-full h-16 px-3 py-2 mt-5 duration-150 border rounded hover:border-zinc-100/80 border-zinc-600 focus-within:border-zinc-100/80 focus-within:ring-0 '>
+              <label htmlFor='reads' className='block text-xs font-medium text-zinc-100'>
+              Root
+              </label>
+              <p>{tree.root}</p>
+            </div>
+            : <></>
+          }
+
+          {error ? <ErrorMessage message={error} /> : null}
+
+          <div className='mt-8'>
+            <p className='space-y-2 text-xs text-zinc-500'>beware of marto.lol</p>
+          </div>
+        </form>
+
+      </div>
     </main>
   )
 }
