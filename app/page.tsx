@@ -64,11 +64,11 @@ export default function Home() {
   }
 
   const downloadTree = () => {
-    const exportName = "merklefy-tree"
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tree.dump()))
+    const exportName = 'merklefy-tree'
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(tree.dump()))
     const downloadAnchorNode = document.createElement('a')
-    downloadAnchorNode.setAttribute("href", dataStr)
-    downloadAnchorNode.setAttribute("download", exportName + ".json")
+    downloadAnchorNode.setAttribute('href', dataStr)
+    downloadAnchorNode.setAttribute('download', exportName + '.json')
     document.body.appendChild(downloadAnchorNode)
     downloadAnchorNode.click()
     downloadAnchorNode.remove()
@@ -78,7 +78,7 @@ export default function Home() {
     <main className='flex min-h-screen flex-col items-center justify-between p-0 md:p-24'>
       <div className='container px-8 max-w-3xl mx-auto'>
 
-        <h1 className="py-4 text-5xl font-bold text-center gradient">
+        <h1 className='py-4 text-5xl font-bold text-center gradient'>
           Merklefy 🍃
         </h1>
 
@@ -171,7 +171,9 @@ export default function Home() {
         {error ? <ErrorMessage message={error} /> : null}
 
         <div className='mt-8'>
-          <p className='space-y-2 text-xs text-zinc-500'>beware of marto.lol</p>
+          <p className='space-y-2 text-xs text-zinc-500'>
+            made with <a className='underline hover:text-white' href='https://github.com/OpenZeppelin/merkle-tree' target='_blank'>@openzeppelin/merkle-tree</a> by <a className='underline hover:text-white' href='https://marto.lol' target='_blank'>marto.lol</a>
+          </p>
         </div>
 
       </div>
