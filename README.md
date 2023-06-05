@@ -1,6 +1,11 @@
 # Merklefy
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b312fd88-d78f-464d-a2a9-7c8997cf2f7f/deploy-status)](https://app.netlify.com/sites/merklefy/deploys)
 
 Web app to generate merkle trees and proofs 🍃
+
+![](https://github.com/martriay/merklefy/merklefy.gif)
+
+Deployed at https://merklefy.marto.lol/
 
 ## Getting Started
 
