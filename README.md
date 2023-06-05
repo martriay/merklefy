@@ -3,7 +3,7 @@
 
 Web app to generate merkle trees and proofs 🍃
 
-![](https://github.com/martriay/merklefy/merklefy.gif)
+![](https://github.com/martriay/merklefy/blob/main/merklefy.gif)
 
 Deployed at https://merklefy.marto.lol/
 
