@@ -76,7 +76,7 @@ export default function Home() {
   }
 
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+    <main className='flex min-h-screen flex-col items-center justify-between p-0 md:p-24'>
       <div className='container px-8 max-w-3xl mx-auto'>
 
         <form
