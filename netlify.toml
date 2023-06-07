@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://merklefy.netlify.app/*"
+  to = "https://merklefy.marto.lol/:splat"
+  status = 301
+  force = true
